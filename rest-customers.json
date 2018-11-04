@@ -96,7 +96,7 @@
     {
       "name": "IMAGE_STREAM_NAMESPACE",
       "displayName": "Image Stream Namespace",
-      "value": "openshift",
+      "value": "registry-console",
       "required": true,
       "description": "Namespace in which the Fuse ImageStreams are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project."
     },
