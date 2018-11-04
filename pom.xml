@@ -5,7 +5,7 @@
   <artifactId>panorama-rest-customers</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Crossvale :: Panorama :: MSA :: Customers</name>
-  <description>Spring Boot example running a Camel REST route</description>
+  <description>Panorama ESB Customers quickstart</description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Spring Boot default profile in order to use an embedded database -->
