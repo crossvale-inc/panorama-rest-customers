@@ -7,7 +7,7 @@
         <property name="userName" value="${activemq.broker.username:#null}"/>
         <property name="password" value="${activemq.broker.password:#null}"/>
     </bean>
-    <bean class="org.apache.activemq.pool.PooledConnectionFactory"
+    <bean primary="true" class="org.apache.activemq.pool.PooledConnectionFactory"
         destroy-method="stop" id="pooledConnectionFactory" init-method="start">
         <property name="maxConnections" value="${activemq.pool.max.connections}"/>
         <property name="connectionFactory" ref="jmsConnectionFactory"/>
