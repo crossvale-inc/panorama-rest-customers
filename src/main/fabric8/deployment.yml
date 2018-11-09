@@ -22,3 +22,9 @@ spec:
             value: ${mysql-service-username}
           - name: MYSQL_SERVICE_PASSWORD
             value: ${mysql-service-password}
+          - name: AMQ_BROKER_URL
+            value: ${activemq.broker.url}
+          - name: AMQ_BROKER_USERNAME
+            value: ${activemq.broker.username}
+          - name: AMQ_BROKER_PASSWORD
+            value: ${activemq.broker.password}
