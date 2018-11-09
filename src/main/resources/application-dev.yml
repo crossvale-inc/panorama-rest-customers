@@ -1,12 +1,12 @@
 camel:
   springboot:
     # The Camel context name
-    name: CamelRestSql
+    name: camelContext
   component:
     servlet:
       mapping:
         enabled: true
-        context-path: /camel-rest-sql/*
+        context-path: /rest/*
 
 # Binding health checks to a different port
 management:
