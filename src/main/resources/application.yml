@@ -28,7 +28,7 @@ mysql:
 
 activemq:
   broker:
-    url:  localhost
+    url:  172.16.18.40
     username: mqUser
     password: mqPassword
   pool:
