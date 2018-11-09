@@ -26,17 +26,17 @@
             contextPath="/rest/*" host="localhost"/>
         <rest consumes="application/json" id="_customers_get" produces="application/json">
             <get bindingMode="json" id="customers_get"
-                outType="CustomerBase[].class" uri="/customers">
+                outType="com.crossvale.fiscamel.service.datatypes.CustomerBase[].class" uri="/customers">
                 <description>Retrieve all customers</description>
                 <to id="customers_get_to" uri="bean:customerController?method=getAllCustomers"/>
             </get>
             <get bindingMode="json" enableCORS="true"
-                id="_customerNumber_get" outType="Customer.class" uri="/{customerNumber}">
+                id="_customerNumber_get" outType="com.crossvale.fiscamel.service.datatypes.Customer.class" uri="/{customerNumber}">
                 <param dataType="string" name="customerNumber" type="path"/>
                 <toD id="customers_get_to" uri="bean:customerController?method=getCustomerByNumber(${header.customerNumber})"/>
             </get>
             <get bindingMode="json" enableCORS="true" id="_search_get"
-                outType="CustomerBase[].class" uri="/search/{name}">
+                outType="com.crossvale.fiscamel.service.datatypes.CustomerBase[].class" uri="/search/{name}">
                 <param dataType="string" name="name" type="path"/>
                 <toD id="customers_get_to" uri="bean:customerController?method=searchCustomerByName(${header.name})"/>
             </get>
