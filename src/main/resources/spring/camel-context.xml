@@ -12,7 +12,7 @@
         <property name="maxConnections" value="${activemq.pool.max.connections}"/>
         <property name="connectionFactory" ref="jmsConnectionFactory"/>
     </bean>
-    <bean class="org.springframework.jms.core.JmsTemplate" id="jmsTemplate">
+    <bean class="org.springframework.jms.core.JmsTemplate" id="jmsConfig">
         <property name="connectionFactory" ref="pooledConnectionFactory"/>
         <property name="concurrentConsumers" value="${activemq.concurrent.consumers}"/>
     </bean>
