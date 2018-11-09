@@ -26,11 +26,16 @@ mysql:
     # The database to use, can be customized using the 'MYSQL_SERVICE_DATABASE' env variable
     database: sampledb
 
-amq:
+activemq:
   broker:
     url:  localhost
     username: mqUser
     password: mqPassword
+  pool:
+    max:
+      connections: 8
+  concurrent:
+    consumers: 10
 
 spring:
   # Spring JDBC configuration

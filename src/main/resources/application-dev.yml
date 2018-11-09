@@ -18,11 +18,16 @@ endpoints:
   health:
     enabled: true
     
-amq:
+activemq:
   broker:
     url:  localhost
     username: mqUser
     password: mqPassword
+  pool:
+    max:
+      connections: 8
+  concurrent:
+    consumers: 10
 
 spring:
   # Spring JDBC configuration
