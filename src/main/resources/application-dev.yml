@@ -17,6 +17,12 @@ endpoints:
   enabled: false
   health:
     enabled: true
+    
+amq:
+  broker:
+    url:  localhost
+    username: mqUser
+    password: mqPassword
 
 spring:
   # Spring JDBC configuration
