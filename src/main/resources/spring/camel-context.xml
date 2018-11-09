@@ -1,18 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
-
-    <!-- You could also define a traditional camel context here -->
-    <!--
-    <camelContext xmlns="http://camel.apache.org/schema/spring">
-        <route>
-            <from uri="timer://foo?period=1000"/>
-            <setBody><simple>Hello World from camel-contex.xml</simple></setBody>
-            <log message=">>> ${body}"/>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <!-- MQ Components -->
+    <bean class="org.apache.activemq.ActiveMQConnectionFactory" id="jmsConnectionFactory">
+        <property name="brokerURL" value="${activemq.broker.url}"/>
+        <property name="userName" value="${activemq.broker.username:#null}"/>
+        <property name="password" value="${activemq.broker.password:#null}"/>
+    </bean>
+    <bean class="org.apache.activemq.pool.PooledConnectionFactory"
+        destroy-method="stop" id="pooledConnectionFactory" init-method="start">
+        <property name="maxConnections" value="${activemq.pool.max.connections}"/>
+        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+    </bean>
+    <bean class="org.springframework.jms.core.JmsTemplate" id="jmsTemplate">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="concurrentConsumers" value="${activemq.concurrent.consumers}"/>
+    </bean>
+    <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="amq">
+        <property name="configuration" ref="jmsConfig"/>
+    </bean>
+    <!-- MQ Components -->
+    <!-- Routes for interaction with MQ Backbone -->
+    <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration bindingMode="json" component="servlet"
+            contextPath="/rest/*" host="localhost"/>
+        <rest consumes="application/json" id="_customers_get" produces="application/json">
+            <get bindingMode="json" id="customers_get"
+                outType="CustomerBase[].class" uri="/customers">
+                <to id="customers_get_to" uri="bean:customerController?method=getAllCustomers"/>
+            </get>
+            <get bindingMode="json" enableCORS="true"
+                id="_customerNumber_get" outType="Customer.class" uri="/{customerNumber}">
+                <param dataType="string" name="customerNumber" type="path"/>
+                <to id="customers_get_to" uri="bean:customerController?method=getAllCustomers"/>
+            </get>
+            <get bindingMode="json" enableCORS="true" id="_search_get"
+                outType="CustomerBase[].class" uri="/search/{name}">
+                <param dataType="string" name="name" type="path"/>
+                <to id="customers_get_to" uri="bean:customerController?method=searchCustomerByName(${header.name})"/>
+            </get>
+        </rest>
+        <rest consumes="application/json" id="_customers_post" produces="text/plain">
+            <post bindingMode="json" id="customers_post">
+                <to id="customers_post_to" uri="direct:processCustomer"/>
+            </post>
+        </rest>
+        <rest consumes="application/json" id="_customers_put" produces="text/plain">
+            <put bindingMode="json" id="customers_put">
+                <to id="customers_put_to" uri="direct:processCustomer"/>
+            </put>
+        </rest>
+        <route id="_rteToBackend">
+            <from id="_fromChannel" uri="direct:submitToQueueForProcessing"/>
+            <log id="_logRequest" message="Request: ${body}"/>
+            <to id="_toBackEnd" uri="activemq:queue:in"/>
+        </route>
+        <route id="_rteFromBackend">
+            <from id="_fromBackEnd" uri="activemq:queue:out"/>
+            <log id="_logResponse" message="Response: ${body}"/>
+            <to id="_to3" uri="direct:responseFromQueueForChannel"/>
         </route>
     </camelContext>
-    -->
+    <!-- Routes for interaction with MQ Backbone -->
 </beans>
