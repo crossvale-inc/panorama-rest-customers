@@ -20,7 +20,7 @@ endpoints:
     
 activemq:
   broker:
-    url:  172.16.18.40
+    url:  tcp://172.16.18.40:61616
     username: mqUser
     password: mqPassword
   pool:
