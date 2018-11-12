@@ -30,7 +30,7 @@
         <bean
         class="com.crossvale.fiscamel.service.processor.CustomerProcessor" id="customerProcessor"/>
     <bean
-        class="com.crossvale.fiscamel.service.controller.ResponseProcessor" id="responseProcessor"/>
+        class="com.crossvale.fiscamel.service.processor.ResponseProcessor" id="responseProcessor"/>
     <!--  Custom Processors -->
     <!-- Routes for interaction with MQ Backbone -->
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
