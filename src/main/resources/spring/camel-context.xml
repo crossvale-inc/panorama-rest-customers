@@ -68,7 +68,7 @@
 			<get bindingMode="json" enableCORS="true"
 				id="_customerNumber_get"
 				outType="com.crossvale.fiscamel.service.datatypes.Customer"
-				uri="/{customerNumber}">
+				uri="customer/{customerNumber}">
 				<param dataType="string" name="customerNumber" type="path" />
 				<toD id="customers_get_to"
 					uri="bean:customerController?method=getCustomerByNumber(${header.customerNumber})" />
