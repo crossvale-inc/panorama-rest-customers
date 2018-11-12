@@ -92,13 +92,19 @@ public class CustomerModel {
 		
 		System.out.println("Request to MQ: {'customerId': '" + customerNumber + "'}");
 		
-		String result = fluentProducerTemplate
+		String result = new String();
+		
+		try {
+		result = fluentProducerTemplate
 				.withHeader("operation", "getCustomerById")
 				.withHeader("version", "1.0")
 				.withHeader("channel", "default")
 				.withBody("{'customerId': '"+customerNumber+"'}")
                 .to("amq:queue:Customer.Retrieval.queue?exchangePattern=InOut")
                 .request(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("Response from MQ: "+ result);
 		
