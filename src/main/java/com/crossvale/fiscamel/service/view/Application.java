@@ -142,17 +142,17 @@ public class Application extends SpringBootServletInitializer {
     			.to("bean:creditScoreController?method=getCreditScore");
     		
     		/* This route passes the exchange to the CustomerProcessor then sends it to the sendEvent route */
-    		from("direct:processCustomer")
-    			.process("customerProcessor")
-    			.to("direct:sendEvent");
+    		//from("direct:processCustomer")
+    		//	.process("customerProcessor")
+    		//	.to("direct:sendEvent");
     		
     		/* This route calls the EventProcesor and marshals the exchange back to JSON from plain text to then call the 
     		 * sendEventDetails method in the EventController bean */
-    		from("direct:sendEvent")
-    			.log("Sending event to event-receiver")
-    			.process("responseProcessor")
-    			.marshal().json(JsonLibrary.Jackson)
-    			.to("bean:responseController?method=sendEventDetails");
+    		//from("direct:sendEvent")
+    		//	.log("Sending event to event-receiver")
+    		//	.process("responseProcessor")
+    		//	.marshal().json(JsonLibrary.Jackson)
+    		//	.to("bean:responseController?method=sendEventDetails");
         }
     }    
 }
