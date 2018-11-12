@@ -41,6 +41,13 @@ public class AccountModel {
 		
 		// Create an empty list of accounts to start
 		List<Account> accounts = new ArrayList<Account>();
+		Account a1 = new Account();
+		a1.setAccountNumber("0001");
+		accounts.add(a1);
+		a1 = new Account();
+		a1.setAccountNumber("01-002");
+		accounts.add(a1);
+		
 		return accounts;
 		
 		/*
