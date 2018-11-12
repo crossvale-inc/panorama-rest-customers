@@ -42,6 +42,7 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 
+    /*
     @Bean
     ServletRegistrationBean servletRegistrationBean() {
         ServletRegistrationBean servlet = new ServletRegistrationBean(
@@ -50,6 +51,7 @@ public class Application extends SpringBootServletInitializer {
         return servlet;
     }
 
+*/
     @SuppressWarnings("deprecation")
     @Component
     class RestApi extends RouteBuilder {
