@@ -8,7 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.FluentProducerTemplate;
+import org.apache.camel.Processor;
 
 import com.crossvale.fiscamel.service.datatypes.CreditLimit;
 import com.crossvale.fiscamel.service.datatypes.CreditRating;
@@ -17,7 +24,10 @@ import com.crossvale.fiscamel.service.datatypes.CustomerBase;
 
 @Service("customerModel")
 public class CustomerModel {
-
+	
+	@Autowired
+	private FluentProducerTemplate fluentProducerTemplate;
+	
 	private Connection connection = null;
 	private SQLException latestException = new SQLException();
 
@@ -79,8 +89,22 @@ public class CustomerModel {
 	 * @return Customer that contains the matching customerNumber
 	 */
 	public Customer selectCustomerByNumber2(String customerNumber) {
+		
+		String result = fluentProducerTemplate
+				.withHeader("operation", "getCustomerById")
+				.withHeader("version", "1.0")
+				.withHeader("channel", "default")
+				.withBody("{'customerId': '"+customerNumber+"'}")
+                .to("amq:queue:Customer.Retrieve.queue?exchangePattern=InOut")
+                .request(String.class);
+		
+		System.out.println("Response from MQ: {blah} "+ result);
+		
 		//initializeConnection();
 		//String sql = "select * from open_customer where customer_number like ?;";
+		
+		
+		
 		Customer foundCustomer = new Customer();
 		foundCustomer.setCustomerNumber(customerNumber);
 		return foundCustomer;

@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.model.FromDefinition;
+import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+
 import org.springframework.stereotype.Service;
 
 import com.crossvale.fiscamel.service.datatypes.Customer;
@@ -52,6 +56,9 @@ public class CustomerController {
 	 * @return Customer from the CustomerModel with the specified customerNumber
 	 */
 	public Customer getCustomerByNumber(String customerNumber) {
+		CamelContext camelContext = new SpringCamelContext(appContext);
+				
+		
 		Customer customer = new Customer();
 		customerModel = (CustomerModel) appContext.getBean("customerModel");
 		responseController = (ResponseController) appContext.getBean("responseController");
