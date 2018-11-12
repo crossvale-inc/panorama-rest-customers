@@ -24,9 +24,9 @@
     <!-- MQ Components -->
     <!--  Custom Processors -->
     <bean
-        class="com.crossvale.fiscamel.service.controller.CustomerController" id="customerProcessor"/>
+        class="com.crossvale.fiscamel.service.controller.CustomerController" id="customerController"/>
     <bean
-        class="com.crossvale.fiscamel.service.controller.ResponseController" id="responseProcessor"/>
+        class="com.crossvale.fiscamel.service.controller.ResponseController" id="responseController"/>
     <!--  Custom Processors -->
     <!-- Routes for interaction with MQ Backbone -->
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
@@ -66,13 +66,13 @@
         <route id="processCustomer">
             <from id="_directToCustomer" uri="direct:processCustomer"/>
             <log id="_logProcessCustomerRequest" message="Request: ${body}"/>
-            <process id="_processCustomer" ref="customerProcessor"/>
+            <process id="_processCustomer" ref="customerController"/>
             <to id="_processCustomerSendEvent" uri="direct:sendEvent"/>
         </route>
         <route id="sendEvent">
             <from id="_receiveSendEvent" uri="direct:sendEvent"/>
             <log id="_logSendEventRequest" message="Request: ${body}"/>
-            <process id="_processResponse" ref="responseProcessor"/>
+            <process id="_processResponse" ref="responseController"/>
             <to id="_sendEventDetails" uri="bean:responseController?method=sendEventDetails"/>
         </route>
         <!-- MQ Routes -->
