@@ -95,7 +95,7 @@ public class CustomerModel {
 				.withHeader("version", "1.0")
 				.withHeader("channel", "default")
 				.withBody("{'customerId': '"+customerNumber+"'}")
-                .to("amq:queue:Customer.Retrieve.queue?exchangePattern=InOut")
+                .to("amq:queue:Customer.Retrieval.queue?exchangePattern=InOut")
                 .request(String.class);
 		
 		System.out.println("Response from MQ: {blah} "+ result);
