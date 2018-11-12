@@ -90,6 +90,8 @@ public class CustomerModel {
 	 */
 	public Customer selectCustomerByNumber2(String customerNumber) {
 		
+		System.out.println("Request to MQ: {'customerId': '" + customerNumber + "'}");
+		
 		String result = fluentProducerTemplate
 				.withHeader("operation", "getCustomerById")
 				.withHeader("version", "1.0")
@@ -98,7 +100,7 @@ public class CustomerModel {
                 .to("amq:queue:Customer.Retrieval.queue?exchangePattern=InOut")
                 .request(String.class);
 		
-		System.out.println("Response from MQ: {blah} "+ result);
+		System.out.println("Response from MQ: "+ result);
 		
 		//initializeConnection();
 		//String sql = "select * from open_customer where customer_number like ?;";
