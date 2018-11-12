@@ -115,7 +115,7 @@
 		<!-- MQ Routes -->
 		<route id="_bepCustomerRetrieval">
 			<from id="_fromBackEnd" uri="activemq:Customer_Retrieval:in" />
-			<log id="_logRouteFromBackendResponse"
+			<log id="_log_bepCustomerRetrieval"
 				message="request: ${body}" />
 			<to id="_to3" uri="activemq:Customer_Retrieval:out" />
 		</route>			
@@ -123,7 +123,7 @@
 		<!-- Routes for interaction with MQ Backbone -->
 		<route id="_rteToBackend">
 			<from id="_fromChannel" uri="direct:submitToQueueForProcessing" />
-			<log id="_logRouteToBackendRequest" message="Request: ${body}" />
+			<log id="_log_rteToBackendRequest" message="Request: ${body}" />
 			<to id="_toBackEnd" uri="activemq:queue:in" />
 		</route>
 		<route id="_rteFromBackend">
