@@ -21,21 +21,20 @@
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="amq">
         <property name="configuration" ref="jmsConfig"/>
     </bean>
-    
-    <!-- MQ Components -->    
+    <!-- MQ Components -->
     <!--  Custom Processors -->
-    
-    <bean id="customerProcessor" class="com.crossvale.fiscamel.service.controller.CustomerController" />
-    <bean id="responseProcessor" class="com.crossvale.fiscamel.service.controller.ResponseController" />
-    <!--  Custom Processors -->    
+    <bean
+        class="com.crossvale.fiscamel.service.controller.CustomerController" id="customerProcessor"/>
+    <bean
+        class="com.crossvale.fiscamel.service.controller.ResponseController" id="responseProcessor"/>
+    <!--  Custom Processors -->
     <!-- Routes for interaction with MQ Backbone -->
-    
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration bindingMode="json" component="servlet"
             contextPath="/rest/*" host="localhost">
-            	<dataFormatProperty key="json.in.disableFeatures" value="FAIL_ON_UNKNOWN_PROPERTIES,ADJUST_DATES_TO_CONTEXT_TIME_ZONE"/>
-  				<!-- <dataFormatProperty key="json.in.enableFeatures" value="FAIL_ON_NUMBERS_FOR_ENUMS,USE_BIG_DECIMAL_FOR_FLOATS"/> -->
-            </restConfiguration>
+            <dataFormatProperty key="json.in.disableFeatures" value="FAIL_ON_UNKNOWN_PROPERTIES,ADJUST_DATES_TO_CONTEXT_TIME_ZONE"/>
+            <!-- <dataFormatProperty key="json.in.enableFeatures" value="FAIL_ON_NUMBERS_FOR_ENUMS,USE_BIG_DECIMAL_FOR_FLOATS"/> -->
+        </restConfiguration>
         <rest consumes="application/json" id="_customers_get" produces="application/json">
             <get bindingMode="json" id="customers_get"
                 outType="com.crossvale.fiscamel.service.datatypes.CustomerBase[]" uri="/customers">
@@ -66,26 +65,25 @@
         </rest>
         <route id="processCustomer">
             <from id="_directToCustomer" uri="direct:processCustomer"/>
-            <log id="_logRequest" message="Request: ${body}"/>
+            <log id="_logProcessCustomerRequest" message="Request: ${body}"/>
             <process id="_processCustomer" ref="customerProcessor"/>
             <to id="_processCustomerSendEvent" uri="direct:sendEvent"/>
         </route>
         <route id="sendEvent">
             <from id="_receiveSendEvent" uri="direct:sendEvent"/>
-            <log id="_logRequest" message="Request: ${body}"/>
+            <log id="_logSendEventRequest" message="Request: ${body}"/>
             <process id="_processResponse" ref="responseProcessor"/>
             <to id="_sendEventDetails" uri="bean:responseController?method=sendEventDetails"/>
         </route>
-        
         <!-- MQ Routes -->
         <route id="_rteToBackend">
             <from id="_fromChannel" uri="direct:submitToQueueForProcessing"/>
-            <log id="_logRequest" message="Request: ${body}"/>
+            <log id="_logRouteToBackendRequest" message="Request: ${body}"/>
             <to id="_toBackEnd" uri="activemq:queue:in"/>
         </route>
         <route id="_rteFromBackend">
             <from id="_fromBackEnd" uri="activemq:queue:out"/>
-            <log id="_logResponse" message="Response: ${body}"/>
+            <log id="_logRouteFromBackendResponse" message="Response: ${body}"/>
             <to id="_to3" uri="direct:responseFromQueueForChannel"/>
         </route>
         <!-- MQ Routes -->
