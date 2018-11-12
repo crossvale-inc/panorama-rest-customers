@@ -117,7 +117,7 @@
 			<from id="_from_bepCustomerRetrieval" uri="activemq:Customer_Retrieval:in" />
 			<log id="_log_bepCustomerRetrieval"
 				message="request: ${body}" />
-			<to id="_to_bepCustomerRetrieval" uri="activemq:Customer_Retrieval:out" />
+			<to id="_to_bepCustomerRetrieval" uri="activemq:Customer_Retrieval:in" />
 		</route>			
 		
 		<!-- Routes for interaction with MQ Backbone -->
