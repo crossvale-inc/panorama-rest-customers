@@ -100,7 +100,7 @@ public class CustomerModel {
 				.withHeader("version", "1.0")
 				.withHeader("channel", "default")
 				.withBody("{'customerId': '"+customerNumber+"'}")
-                .to("activemq:Customer_Retrieval:in?exchangePattern=InOut&replyTo=Customer_Retrieval:out")
+                .to("activemq:Customer_Retrieval_In?exchangePattern=InOut&replyTo=Customer_Retrieval_Out")
                 .request(String.class);
 		} catch (Exception e) {
 			e.printStackTrace();
