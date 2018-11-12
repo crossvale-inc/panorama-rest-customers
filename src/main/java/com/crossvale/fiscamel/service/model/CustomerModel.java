@@ -100,7 +100,7 @@ public class CustomerModel {
 				.withHeader("version", "1.0")
 				.withHeader("channel", "default")
 				.withBody("{'customerId': '"+customerNumber+"'}")
-                .to("amq:queue:Customer.Retrieval.queue?exchangePattern=InOut")
+                .to("activemq:Customer_Retrieval:in?exchangePattern=InOut")
                 .request(String.class);
 		} catch (Exception e) {
 			e.printStackTrace();
