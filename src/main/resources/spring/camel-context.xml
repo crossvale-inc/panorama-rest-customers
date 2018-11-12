@@ -114,10 +114,10 @@
 		</route>
 		<!-- MQ Routes -->
 		<route id="_bepCustomerRetrieval">
-			<from id="_from_bepCustomerRetrieval" uri="activemq:Customer_Retrieval_In" />
+			<from id="_from_bepCustomerRetrieval" uri="activemq:queue:Customer_Retrieval_In" />
 			<log id="_log_bepCustomerRetrieval"
 				message="request: ${body}" />
-			<to id="_to_bepCustomerRetrieval" uri="activemq:Customer_Retrieval_Out" />
+			<to id="_to_bepCustomerRetrieval" uri="activemq:queue:Customer_Retrieval_Out"  pattern="OutOnly"/>
 		</route>			
 		
 		<!-- Routes for interaction with MQ Backbone -->
