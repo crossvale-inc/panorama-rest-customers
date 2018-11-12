@@ -43,7 +43,8 @@
 		id="accountController" />
 	<bean class="com.crossvale.fiscamel.service.model.CustomerModel"
 		id="customerModel" />
-		
+	<bean class="com.crossvale.fiscamel.service.model.AccountModel"
+		id="accountModel" />
 		
 	<bean
 		class="com.crossvale.fiscamel.service.controller.ResponseController"

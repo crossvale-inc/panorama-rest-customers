@@ -37,10 +37,13 @@ public class AccountModel {
 	 */
 	public List<Account> selectAccountsByCustomerNumber(String customerNumber) {
 		// With every database call, we initialize the connection to the database before proceeding
-		initializeConnection();
+		//initializeConnection();
 		
 		// Create an empty list of accounts to start
 		List<Account> accounts = new ArrayList<Account>();
+		return accounts;
+		
+		/*
 		if (connection == null) {
 			// Return empty list if database is not initialized correctly
 			return accounts;
@@ -64,6 +67,7 @@ public class AccountModel {
 			e.printStackTrace();
 		} 
 		return accounts;
+		*/
 	}
 	
 	/**

@@ -57,14 +57,14 @@ public class CustomerController {
 		responseController = (ResponseController) appContext.getBean("responseController");
 		
 		// We need to get the accountController so we can access the method to add accounts to the Customer
-		//AccountController accountController = (AccountController) appContext.getBean("accountController");
+		AccountController accountController = (AccountController) appContext.getBean("accountController");
 		
 		// Send an event about the GET call being performed
 		responseController.sendEventAboutGet(new Event("GET", "Customer by CustomerNumber", ""));
 		// Next, we get the customer from the CustomerModel
 		customer = customerModel.selectCustomerByNumber2(customerNumber);
 		// Then we set the accounts on the customer based on the list returned from the AccountController
-		//customer.setAccounts(accountController.getListOfAccountsByCustomerNumber(customer.getCustomerNumber()));
+		customer.setAccounts(accountController.getListOfAccountsByCustomerNumber(customer.getCustomerNumber()));
 		
 		return customer;
 	}
