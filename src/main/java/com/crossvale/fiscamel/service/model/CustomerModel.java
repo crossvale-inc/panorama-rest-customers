@@ -71,6 +71,41 @@ public class CustomerModel {
 		return customers;
 	}
 
+	
+	/**
+	 * Select the customer that contains the matching customerNumber
+	 * 
+	 * @param customerNumber
+	 * @return Customer that contains the matching customerNumber
+	 */
+	public Customer selectCustomerByNumber2(String customerNumber) {
+		//initializeConnection();
+		//String sql = "select * from open_customer where customer_number like ?;";
+		Customer foundCustomer = new Customer();
+		foundCustomer.setCustomerNumber(customerNumber);
+		return foundCustomer;
+		/*
+		if (connection == null) {
+			return foundCustomer;
+		}
+
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, customerNumber);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				foundCustomer = retrieveCustomer(rs);
+			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return foundCustomer;
+		*/
+	}
+	
+	
 	/**
 	 * Select the customer that contains the matching customerNumber
 	 * 

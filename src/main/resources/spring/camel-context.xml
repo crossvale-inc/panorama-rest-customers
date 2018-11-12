@@ -47,7 +47,7 @@
 		class="com.crossvale.fiscamel.service.processor.ResponseProcessor"
 		id="responseProcessor" />
 	<!-- Custom Processors -->
-	<!-- Routes for interaction with MQ Backbone -->
+	
 	<camelContext id="camelContext"
 		xmlns="http://camel.apache.org/schema/spring">
 		<restConfiguration bindingMode="json"
@@ -107,6 +107,7 @@
 				uri="bean:responseController?method=sendEventDetails" />
 		</route>
 		<!-- MQ Routes -->
+		<!-- Routes for interaction with MQ Backbone -->
 		<route id="_rteToBackend">
 			<from id="_fromChannel" uri="direct:submitToQueueForProcessing" />
 			<log id="_logRouteToBackendRequest" message="Request: ${body}" />
@@ -117,8 +118,8 @@
 			<log id="_logRouteFromBackendResponse"
 				message="Response: ${body}" />
 			<to id="_to3" uri="direct:responseFromQueueForChannel" />
-		</route>
+		</route>		
+		<!-- Routes for interaction with MQ Backbone -->
 		<!-- MQ Routes -->
-	</camelContext>
-	<!-- Routes for interaction with MQ Backbone -->
+	</camelContext>	
 </beans>
