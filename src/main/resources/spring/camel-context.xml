@@ -118,7 +118,7 @@
 			<log id="_log_bepCustomerRetrieval"
 				message="request: ${body}" />
 				<transform>
-				<simple>Pew: {body}</simple></transform>
+				<simple>A different Response: ${body}</simple></transform>
 		</route>			
 		
 		<!-- Routes for interaction with MQ Backbone -->
