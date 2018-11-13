@@ -117,7 +117,8 @@
 			<from id="_from_bepCustomerRetrieval" uri="activemq:queue:Customer_Retrieval_In" />
 			<log id="_log_bepCustomerRetrieval"
 				message="request: ${body}" />
-			<to id="_to_bepCustomerRetrieval" uri="activemq:queue:Customer_Retrieval_Out"  pattern="OutOnly"/>
+				<transform>
+				<simple>Pew: {body}</simple></transform>
 		</route>			
 		
 		<!-- Routes for interaction with MQ Backbone -->
