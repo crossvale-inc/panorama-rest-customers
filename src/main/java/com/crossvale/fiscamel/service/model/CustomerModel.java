@@ -114,7 +114,7 @@ public class CustomerModel {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Response from MQ: "+ result);
+		System.out.println("Response2 from MQ: "+ result);
 		
 		return customer;
 		/*
