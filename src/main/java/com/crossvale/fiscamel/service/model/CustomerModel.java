@@ -36,11 +36,12 @@ public class CustomerModel {
 	 * need for postgresql
 	 */
 	public CustomerModel() {
-		try {
+		/*try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
+		*/
 	}
 
 	/**

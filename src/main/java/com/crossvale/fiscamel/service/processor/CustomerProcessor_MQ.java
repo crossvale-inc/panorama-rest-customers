@@ -41,7 +41,9 @@ public class CustomerProcessor_MQ implements Processor {
 			return;			
 		}
 		
-		if(httpmethod.equals("GET") && operation == "getCustomerById")
+		System.out.println(operation);
+		
+		if(httpmethod.equals("GET") && operation.equals("getCustomerById"))
 		{
 			Customer customer = new Customer();
 			Address address = new Address();
