@@ -52,7 +52,7 @@
 		class="com.crossvale.fiscamel.service.processor.ResponseProcessor"
 		id="responseProcessor" />
 	<!-- Invoking Beans -->
-	
+
 	<!-- Processing Beans -->
 	<bean
 		class="com.crossvale.fiscamel.service.processor.CustomerProcessor_MQ"
@@ -60,6 +60,14 @@
 	<!-- Processing Beans -->
 	<camelContext id="camelContext"
 		xmlns="http://camel.apache.org/schema/spring">
+
+
+		<dataFormats>
+			<jaxb id="_Customer" prettyPrint="true"
+				contextPath="com.crossvale.fiscamel.service.datatypes.Customer" />
+		</dataFormats>
+
+
 		<restConfiguration bindingMode="json"
 			component="servlet" contextPath="/rest/*" host="localhost">
 			<dataFormatProperty key="json.in.disableFeatures"
@@ -120,27 +128,31 @@
 		<route id="_bepCustomerRetrieval">
 			<from id="_from_bep_Customer_Retrieval"
 				uri="activemq:queue:Customer_Retrieval_In" />
-			<log id="_log_bepCustomerRetrieval_RQ" message="Request from MQ Customer_Retrieval_In: ${body}" />
+			<log id="_log_bepCustomerRetrieval_RQ"
+				message="Request from MQ Customer_Retrieval_In: ${body}" />
 			<choice>
 				<when>
 					<simple>${header.operation} == 'getCustomerById'</simple>
-					<process id="_bepCustomerRetrievalProcessor_getCustomerById" ref="customerProcessor_MQ" />
+					<process
+						id="_bepCustomerRetrievalProcessor_getCustomerById"
+						ref="customerProcessor_MQ" />
 				</when>
 				<otherwise>
-					<process id="_bepCustomerRetrievalProcessor_unknown" ref="customerProcessor_MQ" />
+					<process id="_bepCustomerRetrievalProcessor_unknown"
+						ref="customerProcessor_MQ" />
 				</otherwise>
 			</choice>
-			<log id="_log_bepCustomerRetrieval_RS" message="Response to MQ Customer_Retrieval_In: ${body}" />
-			<!--<to id="_beanCustomerRetrieval"
-				uri="bean:customerController_MQ?method=getCustomerByNumber(${header.customerNumber})" />
-
-			 <transform id="_transform1"> <simple>A different Response: ${body}</simple> 
+			<marshal ref="_Customer" />
+			<log id="_log_bepCustomerRetrieval_RS"
+				message="Response to MQ Customer_Retrieval_In: ${body}" />
+			<!--<to id="_beanCustomerRetrieval" uri="bean:customerController_MQ?method=getCustomerByNumber(${header.customerNumber})" 
+				/> <transform id="_transform1"> <simple>A different Response: ${body}</simple> 
 				</transform> -->
 		</route>
 
 
-
 		<!-- Routes for interaction with MQ Backbone -->
+		<!-- 
 		<route id="_rteToBackend">
 			<from id="_fromChannel" uri="direct:submitToQueueForProcessing" />
 			<log id="_log_rteToBackendRequest" message="Request: ${body}" />
@@ -152,6 +164,7 @@
 				message="Response: ${body}" />
 			<to id="_to3" uri="direct:responseFromQueueForChannel" />
 		</route>
+		 -->
 		<!-- Routes for interaction with MQ Backbone -->
 		<!-- MQ Routes -->
 	</camelContext>
