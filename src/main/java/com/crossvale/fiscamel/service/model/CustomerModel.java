@@ -99,6 +99,7 @@ public class CustomerModel {
 				.withHeader("operation", "getCustomerById")
 				.withHeader("version", "1.0")
 				.withHeader("channel", "default")
+				.withHeader(Exchange.HTTP_METHOD, "GET")
 				.withBody("{'customerId': '"+customerNumber+"'}")
                 .to("activemq:queue:Customer_Retrieval_In?exchangePattern=InOut&replyTo=Customer_Retrieval_Out&useMessageIDAsCorrelationID=true")
                 .request(String.class);

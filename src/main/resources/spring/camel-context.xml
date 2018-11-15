@@ -31,7 +31,7 @@
 		<property name="configuration" ref="jmsConfig" />
 	</bean>
 	<!-- MQ Components -->
-	<!-- Custom Processors -->
+	<!-- Invoking Beans -->
 	<bean
 		class="com.crossvale.fiscamel.service.processor.CustomerProcessor"
 		id="customerProcessor" />
@@ -45,15 +45,19 @@
 		id="customerModel" />
 	<bean class="com.crossvale.fiscamel.service.model.AccountModel"
 		id="accountModel" />
-		
 	<bean
 		class="com.crossvale.fiscamel.service.controller.ResponseController"
 		id="responseController" />
 	<bean
 		class="com.crossvale.fiscamel.service.processor.ResponseProcessor"
 		id="responseProcessor" />
-	<!-- Custom Processors -->
+	<!-- Invoking Beans -->
 	
+	<!-- Processing Beans -->
+	<bean
+		class="com.crossvale.fiscamel.service.controller.CustomerController_MQ"
+		id="customerController_MQ" />
+	<!-- Processing Beans -->
 	<camelContext id="camelContext"
 		xmlns="http://camel.apache.org/schema/spring">
 		<restConfiguration bindingMode="json"
@@ -114,13 +118,29 @@
 		</route>
 		<!-- MQ Routes -->
 		<route id="_bepCustomerRetrieval">
-			<from id="_from_bepCustomerRetrieval" uri="activemq:queue:Customer_Retrieval_In" />
-			<log id="_log_bepCustomerRetrieval"
-				message="request: ${body}" />
-				<transform>
-				<simple>A different Response: ${body}</simple></transform>
-		</route>			
-		
+			<from id="_from_bep_Customer_Retrieval"
+				uri="activemq:queue:Customer_Retrieval_In" />
+			<log id="_log_bepCustomerRetrieval" message="request: ${body}" />
+			<choice>
+				<when>
+					<simple>${header.operation} == 'getCustomerById'</simple>
+					<to id="_beanCustomerRetrievalWrapper"
+						uri="bean:customerModelWrapperProcessor?method=getCustomerByNumber(${headers},${body})" />
+				</when>
+				<otherwise>
+					<to id="_beanCustomerRetrievalWrapper"
+						uri="bean:customerModelWrapperProcessor?method=unknownOperation(${headers},${body})" />
+				</otherwise>
+			</choice>
+			<!--<to id="_beanCustomerRetrieval"
+				uri="bean:customerController_MQ?method=getCustomerByNumber(${header.customerNumber})" />
+
+			 <transform id="_transform1"> <simple>A different Response: ${body}</simple> 
+				</transform> -->
+		</route>
+
+
+
 		<!-- Routes for interaction with MQ Backbone -->
 		<route id="_rteToBackend">
 			<from id="_fromChannel" uri="direct:submitToQueueForProcessing" />
@@ -132,8 +152,8 @@
 			<log id="_logRouteFromBackendResponse"
 				message="Response: ${body}" />
 			<to id="_to3" uri="direct:responseFromQueueForChannel" />
-		</route>		
+		</route>
 		<!-- Routes for interaction with MQ Backbone -->
 		<!-- MQ Routes -->
-	</camelContext>	
+	</camelContext>
 </beans>
