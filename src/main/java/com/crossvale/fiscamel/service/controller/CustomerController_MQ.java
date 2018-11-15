@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.camel.Body;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Headers;
 import org.apache.camel.model.FromDefinition;
 import org.apache.camel.spring.SpringCamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class CustomerController_MQ {
 		
 	}
 
-	public Customer getCustomerByNumber(String[] headers, String body) {
+	public Customer getCustomerByNumber(@Headers String[] headers, @Body String body) {
 		
 		Customer customer = new Customer();
 		Address address = new Address();
@@ -39,7 +41,7 @@ public class CustomerController_MQ {
 		return customer;		
 	}
 	
-	public Customer unknownOperation(String[] headers, String body) {
+	public Customer unknownOperation(@Headers String[] headers, @Body String body) {
 		
 		//todo: fix this
 		Customer customer = new Customer();
