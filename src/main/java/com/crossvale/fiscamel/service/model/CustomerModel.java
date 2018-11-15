@@ -21,6 +21,7 @@ import com.crossvale.fiscamel.service.datatypes.CreditLimit;
 import com.crossvale.fiscamel.service.datatypes.CreditRating;
 import com.crossvale.fiscamel.service.datatypes.Customer;
 import com.crossvale.fiscamel.service.datatypes.CustomerBase;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("customerModel")
 public class CustomerModel {
@@ -93,7 +94,9 @@ public class CustomerModel {
 		
 		System.out.println("Request to MQ: {'customerId': '" + customerNumber + "'}");
 		
+		ObjectMapper mapper = new ObjectMapper();
 		String result = new String();
+		Customer customer = new Customer();
 		
 		try {
 		result = fluentProducerTemplate
@@ -104,20 +107,16 @@ public class CustomerModel {
 				.withBody("{'customerId': '"+customerNumber+"'}")
                 .to("activemq:queue:Customer_Retrieval_In?exchangePattern=InOut&useMessageIDAsCorrelationID=true")
                 .request(String.class);
+			
+		customer = mapper.readValue((String) result, Customer.class);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("Response from MQ: "+ result);
 		
-		//initializeConnection();
-		//String sql = "select * from open_customer where customer_number like ?;";
-		
-		
-		
-		Customer foundCustomer = new Customer();
-		foundCustomer.setCustomerNumber(customerNumber);
-		return foundCustomer;
+		return customer;
 		/*
 		if (connection == null) {
 			return foundCustomer;
