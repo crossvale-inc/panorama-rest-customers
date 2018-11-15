@@ -125,11 +125,11 @@
 				<when>
 					<simple>${header.operation} == 'getCustomerById'</simple>
 					<to id="_beanCustomerRetrievalWrapper"
-						uri="bean:customerModelWrapperProcessor?method=getCustomerByNumber" />
+						uri="bean:customerController_MQ?method=getCustomerByNumber" />
 				</when>
 				<otherwise>
 					<to id="_beanCustomerRetrievalWrapper"
-						uri="bean:customerModelWrapperProcessor?method=unknownOperation" />
+						uri="bean:customerController_MQ?method=unknownOperation" />
 				</otherwise>
 			</choice>
 			<!--<to id="_beanCustomerRetrieval"
