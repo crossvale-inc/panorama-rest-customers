@@ -61,10 +61,6 @@
 	<camelContext id="camelContext"
 		xmlns="http://camel.apache.org/schema/spring">
 
-		<dataFormats>
-			<json id="_Customer" prettyPrint="true" library="Jackson" unmarshalTypeName="com.crossvale.fiscamel.service.datatypes.Customer" />
-		</dataFormats>
-
 		<restConfiguration bindingMode="json"
 			component="servlet" contextPath="/rest/*" host="localhost">
 			<dataFormatProperty key="json.in.disableFeatures"
@@ -139,7 +135,10 @@
 						ref="customerProcessor_MQ" />
 				</otherwise>
 			</choice>
-			<marshal ref="_Customer" />
+			<marshal>
+				<json prettyPrint="true" library="Jackson"
+					unmarshalTypeName="com.crossvale.fiscamel.service.datatypes.Customer" />
+			</marshal>
 			<log id="_log_bepCustomerRetrieval_RS"
 				message="Response to MQ Customer_Retrieval_In: ${body}" />
 			<!--<to id="_beanCustomerRetrieval" uri="bean:customerController_MQ?method=getCustomerByNumber(${header.customerNumber})" 
@@ -149,19 +148,11 @@
 
 
 		<!-- Routes for interaction with MQ Backbone -->
-		<!-- 
-		<route id="_rteToBackend">
-			<from id="_fromChannel" uri="direct:submitToQueueForProcessing" />
-			<log id="_log_rteToBackendRequest" message="Request: ${body}" />
-			<to id="_toBackEnd" uri="activemq:queue:in" />
-		</route>
-		<route id="_rteFromBackend">
-			<from id="_fromBackEnd" uri="activemq:queue:out" />
-			<log id="_logRouteFromBackendResponse"
-				message="Response: ${body}" />
-			<to id="_to3" uri="direct:responseFromQueueForChannel" />
-		</route>
-		 -->
+		<!-- <route id="_rteToBackend"> <from id="_fromChannel" uri="direct:submitToQueueForProcessing" 
+			/> <log id="_log_rteToBackendRequest" message="Request: ${body}" /> <to id="_toBackEnd" 
+			uri="activemq:queue:in" /> </route> <route id="_rteFromBackend"> <from id="_fromBackEnd" 
+			uri="activemq:queue:out" /> <log id="_logRouteFromBackendResponse" message="Response: 
+			${body}" /> <to id="_to3" uri="direct:responseFromQueueForChannel" /> </route> -->
 		<!-- Routes for interaction with MQ Backbone -->
 		<!-- MQ Routes -->
 	</camelContext>
