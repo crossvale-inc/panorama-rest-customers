@@ -120,7 +120,7 @@
 		<route id="_bepCustomerRetrieval">
 			<from id="_from_bep_Customer_Retrieval"
 				uri="activemq:queue:Customer_Retrieval_In" />
-			<log id="_log_bepCustomerRetrieval" message="request: ${body}" />
+			<log id="_log_bepCustomerRetrieval" message="Request from MQ Customer_Retrieval_In: ${body}" />
 			<choice>
 				<when>
 					<simple>${header.operation} == 'getCustomerById'</simple>

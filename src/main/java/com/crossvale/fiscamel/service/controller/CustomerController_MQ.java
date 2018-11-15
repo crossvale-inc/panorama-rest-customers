@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.camel.Body;
 import org.apache.camel.CamelContext;
@@ -25,7 +26,7 @@ public class CustomerController_MQ {
 		
 	}
 
-	public Customer getCustomerByNumber(@Headers String[] headers, @Body String body) {
+	public Customer getCustomerByNumber(@Headers Map headers, @Body String body) {
 		
 		Customer customer = new Customer();
 		Address address = new Address();
@@ -41,7 +42,7 @@ public class CustomerController_MQ {
 		return customer;		
 	}
 	
-	public Customer unknownOperation(@Headers String[] headers, @Body String body) {
+	public Customer unknownOperation(@Headers Map headers, @Body String body) {
 		
 		//todo: fix this
 		Customer customer = new Customer();
