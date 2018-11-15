@@ -61,12 +61,9 @@
 	<camelContext id="camelContext"
 		xmlns="http://camel.apache.org/schema/spring">
 
-
 		<dataFormats>
-			<jaxb id="_Customer" prettyPrint="true"
-				contextPath="com.crossvale.fiscamel.service.datatypes.Customer" />
+			<json id="_Customer" prettyPrint="true" library="Jackson" unmarshalTypeName="com.crossvale.fiscamel.service.datatypes.Customer" />
 		</dataFormats>
-
 
 		<restConfiguration bindingMode="json"
 			component="servlet" contextPath="/rest/*" host="localhost">
